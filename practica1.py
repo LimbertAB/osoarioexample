@@ -1,4 +1,5 @@
 from tkinter import *
+from decimal import *
 
 raiz=Tk()
 raiz.iconbitmap("imagenes/icono.ico")
@@ -7,7 +8,6 @@ raiz.title("calculadora")
 miframe=Frame(raiz)
 miframe.pack()
 
-total=0
 signo=""
 number1=0
 separador=0
@@ -15,6 +15,7 @@ separador=0
 #-----------funcion de teclado--------------
 def dgitar(num):
     global separador
+    global number1
     if type(num) is int:
         print(numerodepantalla.get())
         if numerodepantalla.get() == '0':
@@ -22,8 +23,10 @@ def dgitar(num):
             numerodepantalla.set("")
         else:
             if separador == 1:
+                number1=Decimal(numerodepantalla.get())
                 print("se separo cadena")
                 numerodepantalla.set("")
+                separador = 0
         numerodepantalla.set(numerodepantalla.get() + str(num))
     else:
         if not '.' in numerodepantalla.get() and numerodepantalla.get() != 0:
@@ -38,32 +41,30 @@ def tipo_operacion(sig):
     if number1 == 0:
         signo = sig
         separador = 1
-        number1=int(numerodepantalla.get())
+        print('signo: '+signo)
     else:
+        separador = 1
         total()
 
 #--------operacion total----------
 def total():
     global signo
     global number1
-    global total
     print("signo: " + signo)
     if signo == "+":
-        total= number1 + int(numerodepantalla.get())
-        numerodepantalla.set(total)
+        numerodepantalla.set(Decimal(number1) + Decimal(numerodepantalla.get()))
         print("suma")
     elif signo == "-":
-        total= number1 - int(numerodepantalla.get())
+        numerodepantalla.set(Decimal(number1) - Decimal(numerodepantalla.get()))
         print("resta")
     elif signo == "*":
-        total= number1 * int(numerodepantalla.get())
+        numerodepantalla.set(Decimal(number1) * Decimal(numerodepantalla.get()))
         print("multiplicacion")
     elif signo == "/":
-        total= number1 / int(numerodepantalla.get())
+        numerodepantalla.set(Decimal(number1) / Decimal(numerodepantalla.get()))
         print("division")
     else:
         print("default thing")
-    numerodepantalla.set(total)
     number1 = 0
 
 #-----------codigo de pantalla--------------
