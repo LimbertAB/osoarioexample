@@ -39,15 +39,16 @@ def tipo_operacion(sig):
     global number1
     print("number:" + str(number1))
     if number1 == 0:
-        signo = sig
+        number1=0
         separador = 1
-        print('signo: '+signo)
+        signo = sig
+        total(sig)
     else:
         separador = 1
-        total()
+        total(sig)
 
 #--------operacion total----------
-def total():
+def total(sig):
     global signo
     global number1
     print("signo: " + signo)
@@ -61,11 +62,19 @@ def total():
         numerodepantalla.set(Decimal(number1) * Decimal(numerodepantalla.get()))
         print("multiplicacion")
     elif signo == "/":
-        numerodepantalla.set(Decimal(number1) / Decimal(numerodepantalla.get()))
-        print("division")
+        try:
+            numerodepantalla.set(Decimal(number1) / Decimal(numerodepantalla.get()))
+            print("division")
+        except ZeroDivisionError:
+            numerodepantalla.set("0")
+            print("division zero")
+        except DecimalException:
+            numerodepantalla.set("0")
+            print("decimal error")
     else:
         print("default thing")
     number1 = 0
+    signo=sig
 
 #-----------codigo de pantalla--------------
 numerodepantalla=StringVar()
@@ -109,7 +118,7 @@ boton0=Button(miframe, text="0", width=10,command=lambda:dgitar(0))
 boton0.grid(row=5,column=1)
 botonpunto=Button(miframe, text=".", width=10,command=lambda:dgitar("."))
 botonpunto.grid(row=5,column=2)
-botonigual=Button(miframe, text="=", width=10,command=lambda:total())
+botonigual=Button(miframe, text="=", width=10,command=lambda:total(""))
 botonigual.grid(row=5,column=3)
 botonsuma=Button(miframe, text="+", width=10,command=lambda:tipo_operacion("+"))
 botonsuma.grid(row=5,column=4)
